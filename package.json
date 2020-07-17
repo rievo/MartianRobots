@@ -1,0 +1,19 @@
+{
+  "name": "martianrobots",
+  "version": "1.0.0",
+  "description": "Here we present a problem to solve. We will value the use of tests for the code challenge resolution.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rievo/MartianRobots.git"
+  },
+  "author": "Diego Vaquero-Melchor",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rievo/MartianRobots/issues"
+  },
+  "homepage": "https://github.com/rievo/MartianRobots#readme"
+}
