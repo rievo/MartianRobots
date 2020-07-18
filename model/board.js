@@ -14,15 +14,33 @@ class Board{
     initialize(){
         
     
-        for (let r = 0; r < this.rows; r++){
+        for (let r = 0; r < this.rows +1; r++){
             let row = [];
 
-            for(let c = 0; c < this.cols; c++){
+            for(let c = 0; c < this.cols+1; c++){
                 row.push(new cell_m.Cell(r, c));
             }
             this.grid.push(row);
             
         }
+    }
+
+    getCell(row, col){
+
+        return this.grid[row][col]
+    }
+
+
+    checkRowColValid(row, col){
+        if(row < 0 || row >= this.cols || col < 0 || col >= this.cols){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    markScent(row, col){
+        this.grid[row][col].content = "scent"
     }
 }
 

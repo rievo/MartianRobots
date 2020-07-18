@@ -57,6 +57,11 @@ function onInputRead(input_str){
     
     console.log(command_list)
 
+    for(let i = 0; i < command_list.length; i++){
+        let str = command_list[i].executeOnBoard(board);
+        console.log(str);
+    }
+
 
 
 }
