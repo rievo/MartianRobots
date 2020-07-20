@@ -32,24 +32,40 @@ class Command{
     //Returns a string encoding the result of the command for that particular grid
     executeOnBoard(board){
 
+        //Executing a new command
 
-        console.log("EXECUTING NEW COMMAND")
+        //INFO: Use this line for debugging
+        //console.log(board.display(this.start_row, this.start_col, this.start_direction, " START"));
         
         //Go through all the movements from the initial position
         for(let i = 0; i < this.movements.length ; i++){
             let current_order_letter = this.movements[i];
             
+            //Create an instance of the command according to the type
             let order = order_m.OrderFactory.getOrderOfTypeForCommand(this, current_order_letter);
-           
             
+            //Apply the order and get the result
             let result = order.applyOnBoard(board);
 
-            if(result.status === "LOST"){
-                return "" + this.current_row + " " + this.current_col + " " + this.current_direction + " LOST\n";
+
+            //INFO: use the status result for displaying warnings
+            /*
+            if(result.status == "valid"){
+                //console.log("valid")
             }
+            if(result.status == "scent"){
+                //console.log("IGNORED DUE TO SCENT")
+            }*/
+
+            if(result.status === "lost"){
+                return "" + this.current_col + " " + this.current_row + " " + this.current_direction + " LOST";
+            }
+
+            //INFO: As before, this line can be used here to debug the state of the board
+            //console.log(board.display(this.current_row, this.current_col, this.current_direction, order.code));
         }
 
-        return "" + this.current_row + " " + this.current_col + " " + this.current_direction;
+        return "" + this.current_col + " " + this.current_row + " " + this.current_direction;
 
     }
 

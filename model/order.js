@@ -3,7 +3,7 @@ class Order{
         this.code = code;
         this.parent_command = parent_command;
 
-        console.log(this.code)
+        //console.log(this.code)
     }
 
     applyOnBoard(board){
@@ -40,6 +40,8 @@ class OrderL extends Order{
     }
 
     applyOnBoard(board){
+
+        //Do the rotation
         if(this.parent_command.current_direction === "N"){
             this.parent_command.current_direction = "W";
         }else if(this.parent_command.current_direction === "W"){
@@ -63,101 +65,53 @@ class OrderF extends Order{
 
     applyOnBoard(board){
 
-        
 
-        //TODO: Check if the current position has the scent.
-        //In that case, ignore this application
-        
-        
-        if(this.parent_command.current_direction === "N"){
+        //Check if the position that should be occupied by the robot is a possible one
+        //i.e. it is inside the grid
+        let is_next_position_valid = this.checkValidForDirection(this.parent_command.current_direction, board);
 
-            //If the target position is valid,
-            if(board.checkRowColValid(this.parent_command.current_row +1, this.parent_command.current_col) == true){
+        //If the position is valid, 
+        if(is_next_position_valid == true){
+            //The robot will not go out of the grid, jut go forward
+            this.move(this.parent_command.current_direction)
+            return {"status":"valid"}
+        }else{//If we apply this movement, the robot would go out of the grid
 
-                //Apply the movement
-                this.parent_command.current_row = this.parent_command.current_row + 1;
-
-                //Return the application
-                return {"status":"valid"}
+            //Check if there is a stent on this cell
+            if( board.getCell(this.parent_command.current_row, this.parent_command.current_col).content === "scent"){
+                //In that case, just ignore the movement
+                return {"status":"scent"} 
             }else{
-
-
-                if(board.getCell(this.parent_command.current_row, this.parent_command.current_col).content === "scent"){
-                    //The cell has a scent, ignore the movement
-                    return {"status":"valid"}
-                }else{
-                    //Do not move the rover and mark the cell
-                    board.markScent(this.parent_command.current_row, this.parent_command.current_col)          
-                    return {"status":"LOST"}
-                }
-                
-            }
-        } else if( this.parent_command.current_direction === "W"){
-            //If the target position is valid,
-            if(board.checkRowColValid(this.parent_command.current_row , this.parent_command.current_col +1) == true){
-
-                //Apply the movement
-                this.parent_command.current_col = this.parent_command.current_col + 1;
-
-                //Return the application
-                return {"status":"valid"}
-            }else{
-
-                if(board.getCell(this.parent_command.current_row, this.parent_command.current_col).content === "scent"){
-                    //The cell has a scent, ignore the movement
-                    return {"status":"valid"}
-                }else{
-                    //Do not move the rover and mark the cell
-                    board.markScent(this.parent_command.current_row, this.parent_command.current_col)          
-                    return {"status":"LOST"}
-                }
-            }
-        }else if( this.parent_command.current_direction === "S"){
-            //If the target position is valid,
-            if(board.checkRowColValid(this.parent_command.current_row -1, this.parent_command.current_col) == true){
-
-                //Apply the movement
-                this.parent_command.current_row = this.parent_command.current_row - 1;
-
-                //Return the application
-                return {"status":"valid"}
-            }else{
-
-                if(board.getCell(this.parent_command.current_row, this.parent_command.current_col).content === "scent"){
-                    //The cell has a scent, ignore the movement
-                    return {"status":"valid"}
-                }else{
-                    //Do not move the rover and mark the cell
-                    board.markScent(this.parent_command.current_row, this.parent_command.current_col)          
-                    return {"status":"LOST"}
-                }
-            }
-        }else if( this.parent_command.current_direction === "E"){
-            //If the target position is valid,
-            if(board.checkRowColValid(this.parent_command.current_row , this.parent_command.current_col - 1) == true){
-
-                //Apply the movement
-                this.parent_command.current_col = this.parent_command.current_col - 1;
-
-                //Return the application
-                return {"status":"valid"}
-            }else{
-
-                
-                if(board.getCell(this.parent_command.current_row, this.parent_command.current_col).content === "scent"){
-                    //The cell has a scent, ignore the movement
-                    return {"status":"valid"}
-                }else{
-                    //Do not move the rover and mark the cell
-                    board.markScent(this.parent_command.current_row, this.parent_command.current_col)          
-                    return {"status":"LOST"}
-                }
+                //Otherwise, mark the scent and return the LOST signal
+                board.markScent(this.parent_command.current_row, this.parent_command.current_col) 
+                return {"status": "lost"}
             }
         }
+        
+    }
 
+    checkValidForDirection(dir, board){
+        if(dir === "N"){
+            return board.checkRowColValid(this.parent_command.current_row +1, this.parent_command.current_col)
+        } else if(dir === "W"){
+            return board.checkRowColValid(this.parent_command.current_row , this.parent_command.current_col - 1)
+        }else if( dir === "S"){
+            return board.checkRowColValid(this.parent_command.current_row -1, this.parent_command.current_col)
+        }else if(dir === "E"){
+            return board.checkRowColValid(this.parent_command.current_row , this.parent_command.current_col +1)
+        }
+    }
 
-        return {"status":"unknown"}
-
+    move(dir){
+        if(dir === "N"){
+            this.parent_command.current_row = this.parent_command.current_row +1;
+        } else if(dir === "W"){
+            this.parent_command.current_col = this.parent_command.current_col -1;
+        }else if( dir === "S"){
+            this.parent_command.current_row = this.parent_command.current_row -1;
+        }else if(dir === "E"){
+            this.parent_command.current_col = this.parent_command.current_col +1;
+        }
     }
 }
 
