@@ -68,6 +68,7 @@ class OrderF extends Order{
         //TODO: Check if the current position has the scent.
         //In that case, ignore this application
         
+        
         if(this.parent_command.current_direction === "N"){
 
             //If the target position is valid,

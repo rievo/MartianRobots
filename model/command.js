@@ -13,8 +13,9 @@ class Command{
         }
 
         
-        this.start_row = parseInt(init_parts[0]); //Y coordinate
-        this.start_col = parseInt(init_parts[1]); //X coordinate
+        this.start_col = parseInt(init_parts[0]); //X coordinate
+        this.start_row = parseInt(init_parts[1]); //Y coordinate
+        
         this.start_direction = init_parts[2];
 
         //Use this variables to store the current position

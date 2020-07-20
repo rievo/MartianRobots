@@ -32,7 +32,7 @@ class Board{
 
 
     checkRowColValid(row, col){
-        if(row < 0 || row >= this.cols || col < 0 || col >= this.cols){
+        if(row < 0 || row >= this.rows || col < 0 || col >= this.cols){
             return false;
         }else{
             return true;
