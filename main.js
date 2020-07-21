@@ -4,20 +4,38 @@ let test_data_path = "./data/sampleinput1.txt"
 let board_m = require("./model/board")
 let command_m = require("./model/command")
 
-//Separated to control the init point
-initEverything();
+var express = require("express")
+var app = express();
 
-function initEverything(){
+const PORT = 8080;
+
+
+app.listen(PORT, ()=>{
+    console.log("LISTENING")
+})
+
+
+app.get("/robots", (req, res, next) =>{
+    
+
+    initEverything(function(result){
+        res.json({result: result})
+    })
+})
+//Separated to control the init point
+//initEverything();
+
+function initEverything(cb){
     
     //Load the test data
     fs.readFile(test_data_path, 'utf8', function(err, data) {
         if (err) throw err;
-        onInputRead(data.replace("\r\n", "\n"))
+        onInputRead(data.replace("\r\n", "\n"), cb)
         
     });
 }
 
-function onInputRead(input_str){
+function onInputRead(input_str, cb){
 
     //INFO: Check if the input string is valid
     if(input_str == undefined || input_str.length < 1){
@@ -44,6 +62,7 @@ function onInputRead(input_str){
     //Create an empty baord with the desired size
     let board = new board_m.Board(grid_height, grid_width);
 
+    let solution = "";
 
     //Try to execute the list of commands
     try{
@@ -71,11 +90,15 @@ function onInputRead(input_str){
         for(let i = 0; i < command_list.length; i++){
             let str = command_list[i].executeOnBoard(board);
             console.log(str);
+            solution += str 
+            solution += "\n"
         }
     }catch(e){
         console.log(e);
     }
 
+
+    cb(solution)
   
 
 
