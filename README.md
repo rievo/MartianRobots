@@ -1,8 +1,18 @@
 
 # Martian robots (from GuideSmiths)
-Here we present a problem to solve. We will value the use of tests for the code challenge resolution.
 
-## The Problem
+
+## Repository structure and launching steps
+
+This repository has two main branches:
+
+*   `master` holds the basic node application. In order to execute the program, just use the `node main.js` command or `npm start`
+
+*   `restserver` holds the express, dockerized version of the program. The same procedure as before can be followed to launch the server. In this case the service can be requested from the URL: `http:\\localhost:8080`. The service will return a JSON with the solution for the default data.
+
+The default data is stored inside the `data` folder, as a text file. In this version of the service the testing data is hardcoded. However, in future implementations that data could be injected by means of a REST POST.
+
+## Statement
 
 The surface of Mars can be modelled by a rectangular grid around which robots are able to move according to instructions provided from Earth. You are to write a program that determines each sequence of robot positions and reports the final position of the robot.
 
